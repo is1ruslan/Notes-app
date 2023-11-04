@@ -1,28 +1,8 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import Sidebar from './Sidebar'
 import Split from 'react-split';
 import './style.css'
-
-function Sidebar(props) {
-    const noteElements = props.notes.map((note, index) =>
-    <div key={note.id}>
-        <div className='title'>
-            <h4 className='text-snippet'>{note.body.split('/n')[0]}</h4>
-            <button className='delete-btn'>-</button>
-        </div>
-    </div>
-    );
-
-    return (
-        <section className='sidebar'>
-            <div className='sidebar-header'>
-                <h1>Notes</h1>
-                <button className='new-note'>+</button>
-            </div>
-            {noteElements}
-        </section>
-    )
-}
 
 function App() {
     const [notes, setNotes] = React.useState([]);
@@ -32,21 +12,21 @@ function App() {
         notes.find(note => note.id === currentNoteId) || notes[0];
 
     
-    const fetchNotes = () => {
+    const startNotes = () => {
         const savedNotes = [
         { id: 1, body: 'Note 1' },
         { id: 2, body: 'Note 2' },
-    ];
-    setNotes(savedNotes);
+        ];
+        setNotes(savedNotes);
     };
 
     useEffect(() => {
-        fetchNotes()
+        startNotes();
     }, []);
 
-    const createNewNote = (noteText) => {
+    const createNewNote = () => {
         const newNote = {
-            body: noteText,
+            body: 'newNote',
             id: Date.now()
         };
         setNotes([...notes, newNote]);
@@ -60,17 +40,17 @@ function App() {
                 direction='horizontal'
                 className='split'
             >
-            <Sidebar 
-                notes={notes}
-                currentNote={currentNote}
-                setCurrentNoteId={setCurrentNoteId}
-                newNote={createNewNote}
-            />
-            <div>
-                <textarea className='editor'>
+                <Sidebar 
+                    notes={notes}
+                    currentNote={currentNote}
+                    setCurrentNoteId={setCurrentNoteId}
+                    newNote={createNewNote}
+                />
+                <div>
+                    <textarea className='editor'>
                     
-                </textarea>
-            </div>
+                    </textarea>
+                </div>
             </Split>
         </main>
     )
