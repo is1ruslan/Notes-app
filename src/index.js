@@ -32,6 +32,10 @@ function App() {
         setNotes([...notes, newNote]);
     }
 
+    const deleteNote = () => {
+        
+    }
+
     return (
         <main>
             <Split
