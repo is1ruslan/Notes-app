@@ -14,8 +14,7 @@ function App() {
     
     const startNotes = () => {
         const savedNotes = JSON.parse(localStorage.getItem('notes')) || [
-        { id: 1, body: 'Note 1' },
-        { id: 2, body: 'Note 2' },
+        { id: 1, body: "# Type your markdown note's title here" }
         ];
         setNotes(savedNotes);
     };
@@ -40,15 +39,25 @@ function App() {
         }
     }, [currentNote])
 
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (tempNoteText !== currentNote.body) {
+                updateNote(tempNoteText)
+            }
+        }, 500)
+        return () => clearTimeout(timeoutId)
+    }, [tempNoteText])
+
     const createNewNote = () => {
         const newNote = {
-            body: 'newNote',
-            id: Date.now()
+            body: "# Type your markdown note's title here",
+            createdAt: Date.now(),
+            updatedAt: Date.now()
         };
         setNotes([...notes, newNote]);
     }
 
-    function updateNote (text) {
+    const updateNote = (text) => {
         const updatedNotes = notes.map(note => {
             if (note.id === currentNoteId) {
                 return {...note, body: text, updatedAt: Date.now() };
