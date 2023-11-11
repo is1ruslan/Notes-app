@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
-import Sidebar from './Sidebar'
+import Sidebar from './Sidebar';
+import Editor from './Editor';
 import Split from 'react-split';
 import './style.css'
 
@@ -77,11 +78,10 @@ function App() {
                     newNote={createNewNote}
                     deleteNote={deleteNote}
                 />
-                <div>
-                    <textarea className='editor'>
-                    
-                    </textarea>
-                </div>
+                <Editor 
+                    tempNoteText={tempNoteText}
+                    setTempNoteText={setTempNoteText}
+                />
             </Split>
         </main>
     )
