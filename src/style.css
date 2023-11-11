@@ -130,4 +130,24 @@ button:focus {
     border-top-right-radius: 2px;
     top: -7px;
     left: -2px
-} 
+}
+
+.text-snippet {
+    padding-inline: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2rem;
+    color: #4A4E74;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.selected-note {
+    background-color: #4A4E74;
+}
+
+.selected-note .text-snippet {
+    color: rgb(255, 255, 255);
+    font-weight: 700;
+}

@@ -6,14 +6,13 @@ import './style.css'
 
 function App() {
     const [notes, setNotes] = React.useState([]);
-    const [currentNoteId, setCurrentNoteId] = React.useState('')
+    const [currentNoteId, setCurrentNoteId] = React.useState('');
+    const [tempNoteText, setTempNoteText] = React.useState("");
 
-    const currentNote = 
-        notes.find(note => note.id === currentNoteId) || notes[0];
-
+    const currentNote = notes.find(note => note.id === currentNoteId) || notes[0];
     
     const startNotes = () => {
-        const savedNotes = [
+        const savedNotes = JSON.parse(localStorage.getItem('notes')) || [
         { id: 1, body: 'Note 1' },
         { id: 2, body: 'Note 2' },
         ];
@@ -24,6 +23,22 @@ function App() {
         startNotes();
     }, []);
 
+    useEffect(() => {
+        localStorage.setItem('notes', JSON.stringify(notes));
+    }, [notes]);
+
+    useEffect(() => {
+        if (!currentNoteId) {
+            setCurrentNoteId(notes[0]?.id)
+        }
+    }, [notes])
+    
+    useEffect(() => {
+        if (currentNote) {
+            setTempNoteText(currentNote.body)
+        }
+    }, [currentNote])
+
     const createNewNote = () => {
         const newNote = {
             body: 'newNote',
@@ -32,8 +47,19 @@ function App() {
         setNotes([...notes, newNote]);
     }
 
-    const deleteNote = () => {
-        
+    function updateNote (text) {
+        const updatedNotes = notes.map(note => {
+            if (note.id === currentNoteId) {
+                return {...note, body: text, updatedAt: Date.now() };
+            }
+            return note;
+        });
+        setNotes(updatedNotes);
+    }
+
+    const deleteNote = (noteId) => {
+        const updatedNotes = notes.filter(note => note.id !== noteId);
+        setNotes(updatedNotes);
     }
 
     return (
@@ -49,6 +75,7 @@ function App() {
                     currentNote={currentNote}
                     setCurrentNoteId={setCurrentNoteId}
                     newNote={createNewNote}
+                    deleteNote={deleteNote}
                 />
                 <div>
                     <textarea className='editor'>
