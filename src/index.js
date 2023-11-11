@@ -11,16 +11,11 @@ function App() {
     const [tempNoteText, setTempNoteText] = React.useState("");
 
     const currentNote = notes.find(note => note.id === currentNoteId) || notes[0];
-    
-    const startNotes = () => {
-        const savedNotes = JSON.parse(localStorage.getItem('notes')) || [
-        { id: 1, body: "# Type your markdown note's title here" }
-        ];
-        setNotes(savedNotes);
-    };
 
+    const sortedNotes = notes.sort((a, b) => b.updatedAt - a.updatedAt);
+    
     useEffect(() => {
-        startNotes();
+        setNotes(JSON.parse(localStorage.getItem('notes')));
     }, []);
 
     useEffect(() => {
@@ -40,18 +35,21 @@ function App() {
     }, [currentNote])
 
     useEffect(() => {
+        if (currentNote) {
+
         const timeoutId = setTimeout(() => {
             if (tempNoteText !== currentNote.body) {
                 updateNote(tempNoteText)
             }
         }, 500)
         return () => clearTimeout(timeoutId)
+        }
     }, [tempNoteText])
 
     const createNewNote = () => {
         const newNote = {
             body: "# Type your markdown note's title here",
-            createdAt: Date.now(),
+            id: Date.now(),
             updatedAt: Date.now()
         };
         setNotes([...notes, newNote]);
