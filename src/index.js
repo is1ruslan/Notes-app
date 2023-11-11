@@ -74,6 +74,9 @@ function App() {
 
     return (
         <main>
+            { 
+            notes.length > 0
+            ?
             <Split
                 sizes={[30, 70]}
                 gutterSize={10}
@@ -92,6 +95,18 @@ function App() {
                     setTempNoteText={setTempNoteText}
                 />
             </Split>
+            :
+            <div className='no-notes'>
+                <h1>You have no notes</h1>
+                    <button
+                        className="first-note"
+                        onClick={createNewNote}
+                    >
+                        Create one now
+                </button>
+            </div>
+
+            }
         </main>
     )
 }
